@@ -1,0 +1,71 @@
+# Task 1: Import Libraries
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn.datasets import load_iris
+
+# Load dataset (Iris as an example)
+try:
+    iris = load_iris(as_frame=True)
+    df = iris.frame  # Convert to pandas DataFrame
+except FileNotFoundError:
+    print("Dataset not found. Please check the file path.")
+except Exception as e:
+    print("Error loading dataset:", e)
+
+# Explore dataset
+print("\nFirst 5 rows of dataset:")
+print(df.head())
+
+print("\nDataset info:")
+print(df.info())
+
+print("\nMissing values per column:")
+print(df.isnull().sum())
+
+# Task 2: Basic Data Analysis
+print("\nDescriptive Statistics:")
+print(df.describe())
+
+# Grouping: average petal length per species
+grouped = df.groupby("target")["petal length (cm)"].mean()
+print("\nAverage petal length per species:")
+print(grouped)
+
+# Task 3: Data Visualization
+
+# 1. Line Chart (using sepal length to simulate a trend across index)
+plt.figure(figsize=(8,5))
+plt.plot(df.index, df["sepal length (cm)"], label="Sepal Length", color="blue")
+plt.title("Line Chart: Sepal Length Trend")
+plt.xlabel("Index")
+plt.ylabel("Sepal Length (cm)")
+plt.legend()
+plt.show()
+
+# 2. Bar Chart (average petal length per species)
+plt.figure(figsize=(8,5))
+grouped.plot(kind="bar", color="green")
+plt.title("Bar Chart: Avg Petal Length per Species")
+plt.xlabel("Species")
+plt.ylabel("Average Petal Length (cm)")
+plt.show()
+
+# 3. Histogram (distribution of sepal width)
+plt.figure(figsize=(8,5))
+plt.hist(df["sepal width (cm)"], bins=15, color="orange", edgecolor="black")
+plt.title("Histogram: Distribution of Sepal Width")
+plt.xlabel("Sepal Width (cm)")
+plt.ylabel("Frequency")
+plt.show()
+
+# 4. Scatter Plot (sepal length vs petal length)
+plt.figure(figsize=(8,5))
+plt.scatter(df["sepal length (cm)"], df["petal length (cm)"], alpha=0.7, c=df["target"], cmap="viridis")
+plt.title("Scatter Plot: Sepal Length vs Petal Length")
+plt.xlabel("Sepal Length (cm)")
+plt.ylabel("Petal Length (cm)")
+plt.colorbar(label="Species")
+plt.show()
+
+
